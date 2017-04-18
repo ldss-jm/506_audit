@@ -3,17 +3,6 @@ require 'fileutils'
 require 'set'
 
 
-def make_query(query, outfile)
-  a_query = File.read(query)
-  puts 'running query'
-  results = run_query(a_query, @prod_cred)
-  puts 'writing results'
-  write_results(outfile, results)
-end
-
-make_query('all.colls.sql', 'output_SQL_results.txt')
-
-
 class Record
   attr_accessor :_773, :_506, :_506s_needed, :_506s_deleted, :_506_action,
                 :bnum
@@ -311,6 +300,21 @@ end
 #
 # Script begins here:
 #
+
+def make_query(query, outfile)
+  a_query = File.read(query)
+  puts 'running query'
+  results = run_query(a_query, @prod_cred)
+  puts 'writing results'
+  write_results(outfile, results)
+end
+
+
+write_results('output_SQL_results.txt',
+              make_query('all.colls.sql'),
+              headers='',
+              format='tsv'
+)
 
 # import 773 data to colls
 lines = []
