@@ -186,7 +186,9 @@ class Collection
   end
 
   def modifiable()
-    @acctunit.include?('UNL') or @marcsource == 'SerialsSolutions'
+    @acctunit.include?('UNL') || @marcsource == 'SerialsSolutions'
+    # to see only changes to unmodifiable collections, uncomment below
+    #!@acctunit.include?('UNL') && @marcsource != 'SerialsSolutions'
   end
 end
 
@@ -301,14 +303,6 @@ end
 # Script begins here:
 #
 
-def make_query(query, outfile)
-  a_query = File.read(query)
-  puts 'running query'
-  results = run_query(a_query, @prod_cred)
-  puts 'writing results'
-  write_results(outfile, results)
-end
-
 
 write_results('output_SQL_results.txt',
               make_query('all.colls.sql'),
@@ -340,7 +334,7 @@ mil_headers = ['bnum', '773', '506']
 # It was too much loading all records at once. Each bib record may have multiple
 # entries, so can't partition the importing at totally arbitrary places
 (0..9).each do |num|
-  puts num
+  puts "processing bibs beginning .b#{num}"
   do_lines(mil_lines, colls, mil_headers, num)
 end
 
