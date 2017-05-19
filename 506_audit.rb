@@ -303,11 +303,11 @@ end
 # Script begins here:
 #
 
-
-write_results('output_SQL_results.txt',
-              make_query('all.colls.sql'),
-              headers='',
-              format='tsv'
+c = Connect.new
+c.make_query('all.colls.sql')
+c.write_results('output_SQL_results.txt',
+              include_headers: false,
+              format: 'tsv'
 )
 
 # import 773 data to colls
